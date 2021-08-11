@@ -40,6 +40,7 @@ jobs:
            appid: ${{ secrets.APPID }}
           run: |
            bash CnUnicom.sh
+           workdirbase="/tmp/log/CnUnicom"
            
         - name: Run 号码2
           env:

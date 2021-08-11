@@ -1,4 +1,4 @@
-> 登录 签到 会员任务
+> 登录 签到
 
 #### 各版本使用教程  
 > [**CnUnicom.sh**](https://github.com/mixool/HiCnUnicom/blob/master/tutorial/CnUnicom_sh_readme.md)  

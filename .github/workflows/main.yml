@@ -1,14 +1,17 @@
-name: 联通掌厅签到
+name: 签到
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ master ]
   schedule:
     - cron: 30 04,23 * * ?
+  watch:
+    types: started
     
 jobs:
   run-it:
     runs-on: ubuntu-latest
-    name: 联通掌厅签到
+    name: 签到
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
         - name: Checkout codes
@@ -16,19 +19,32 @@ jobs:
           
         - name: 运行时间
           run: |
-            time=$(curl -s "http://quan.suning.com/getSysTime.do")
-            echo -e "当前时间：\n${time}"
+           time=$(curl -s "http://quan.suning.com/getSysTime.do")
+           echo -e "当前时间：\n${time}"
+           
+    #自己写的循环语句变量传递有点问题，就用这个修改yml文件增加或者减少"Run 号码xx"的方法运行算了。
+    #这里举个列子如下，假如是第@个号码，就可以在后面添加如下，然后自己去添加对应的secret变量 HAOMA@、MM@就行了
+        #- name: Run 号码@
+          #env:
+           #haoma: ${{ secrets.HAOMA@ }}
+           #mm: ${{ secrets.MM@ }}
+           #appid: ${{ secrets.APPID }}
+          #run: |
+           #bash CnUnicom.sh
+    #例子到此为止
  
-        - name: 联通掌厅签到
+        - name: Run 号码1
           env:
-            user: ${{ secrets.USER }}
-            appid: ${{ secrets.APPID }}
+           haoma: ${{ secrets.HAOMA }}
+           mm: ${{ secrets.MM }}
+           appid: ${{ secrets.APPID }}
           run: |
-            # 判断是否有设置appid，没有则使用默认配置
-            if test -z "$appid"; then   appid="247b001385de5cc6ce11731ba1b15835313d489d604e58280e455a6c91e5058651acfb0f0b77029c2372659c319e02645b54c0acc367e692ab24a546b83c302d"; fi
-            
-            for u in $user
-            do
-              bash CnUnicom.sh ${u/,/ }
-            done
-
+           bash CnUnicom.sh
+           
+        - name: Run 号码2
+          env:
+           haoma: ${{ secrets.HAOMA2 }}
+           mm: ${{ secrets.MM }}
+           appid: ${{ secrets.APPID }}
+          run: |
+           bash CnUnicom.sh
